@@ -64,10 +64,19 @@ class StarletteOAuth2App(StarletteAppMixin, AsyncOAuth2Mixin, AsyncOpenIDMixin, 
             description = request.query_params.get('error_description')
             raise OAuthError(error=error, description=description)
 
-        params = {
-            'code': request.query_params.get('code'),
-            'state': request.query_params.get('state'),
-        }
+        if request.method == 'POST':
+            form_data = await request.form()
+            params = {
+                'code': form_data.get('code'),
+                'state': form_data.get('state'),
+            }
+        elif request.method == 'GET':
+            params = {
+                'code': request.query_params.get('code'),
+                'state': request.query_params.get('state'),
+            }
+        else:
+            raise OAuthError(description='Unsupported HTTP method')
 
         if self.framework.cache:
             session = None

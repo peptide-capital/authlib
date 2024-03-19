@@ -413,6 +413,10 @@ class OAuth2Client:
         if grant_type == 'authorization_code':
             if 'redirect_uri' not in kwargs:
                 kwargs['redirect_uri'] = self.redirect_uri
+            if 'client_id' not in kwargs:
+                kwargs['client_id'] = self.client_id
+            if 'client_secret' not in kwargs:
+                kwargs['client_secret'] = self.client_secret
             return prepare_token_request(grant_type, body, **kwargs)
 
         if 'scope' not in kwargs and self.scope:
