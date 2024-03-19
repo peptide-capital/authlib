@@ -417,6 +417,8 @@ class OAuth2Client:
                 kwargs['client_id'] = self.client_id
             if 'client_secret' not in kwargs:
                 kwargs['client_secret'] = self.client_secret
+            if 'scope' not in kwargs:
+                kwargs['scope'] = self.scope
             return prepare_token_request(grant_type, body, **kwargs)
 
         if 'scope' not in kwargs and self.scope:
